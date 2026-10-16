@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Inspection</title>
+    <script>
+        window.__REPORT_DATA__ = {
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "phone": "1234567890",
+            "address": "123 Main St, Anytown, USA",
+            "city": "Anytown",
+            "state": "CA",
+            "zip": "12345",
+            "country": "USA"
+        };
+    </script>
+</head>
+<body>
+    <h1>Home Inspection</h1>
+    <p>Name: <span id="name"></span></p>
+    <p>Email: <span id="email"></span></p>
+    <p>Phone: <span id="phone"></span></p>
+    <p>Address: <span id="address"></span></p>
+    <p>City: <span id="city"></span></p>
+    <p>State: <span id="state"></span></p>
+    <p>Zip: <span id="zip"></span></p>
+    <p>Country: <span id="country"></span></p>
+    <script>
+        document.getElementById("name").innerHTML = window.__REPORT_DATA__.name;
+        document.getElementById("email").innerHTML = window.__REPORT_DATA__.email;
+        document.getElementById("phone").innerHTML = window.__REPORT_DATA__.phone;
+        document.getElementById("address").innerHTML = window.__REPORT_DATA__.address;
+        document.getElementById("city").innerHTML = window.__REPORT_DATA__.city;
+        document.getElementById("state").innerHTML = window.__REPORT_DATA__.state;
+        document.getElementById("zip").innerHTML = window.__REPORT_DATA__.zip;
+        document.getElementById("country").innerHTML = window.__REPORT_DATA__.country;
+    </script>
+</body>
+</html>

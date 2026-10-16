@@ -1,20 +1,25 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"wxcloudrun-golang/db"
-	"wxcloudrun-golang/service"
+
+	"pdf-go-server/config"
+	"pdf-go-server/gotenberg"
+	"pdf-go-server/service"
 )
 
 func main() {
-	if err := db.Init(); err != nil {
-		panic(fmt.Sprintf("mysql init failed with %+v", err))
+	cfg := config.Load()
+	client := gotenberg.New(cfg.GotenbergURL, cfg.PDFTimeout)
+	srv := &service.Server{
+		TemplatePath: cfg.TemplatePath,
+		Converter:    client,
 	}
 
-	http.HandleFunc("/", service.IndexHandler)
-	http.HandleFunc("/api/count", service.CounterHandler)
+	http.HandleFunc("/health", srv.Health)
+	http.HandleFunc("/api/pdf", srv.PDF)
 
-	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Printf("listening on :%s (gotenberg=%s template=%s)", cfg.Port, cfg.GotenbergURL, cfg.TemplatePath)
+	log.Fatal(http.ListenAndServe(":"+cfg.Port, nil))
 }
