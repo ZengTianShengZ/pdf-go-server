@@ -1,41 +1,921 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Inspection</title>
-    <script>
-        window.__REPORT_DATA__ = {
-            "name": "John Doe",
-            "email": "john.doe@example.com",
-            "phone": "1234567890",
-            "address": "123 Main St, Anytown, USA",
-            "city": "Anytown",
-            "state": "CA",
-            "zip": "12345",
-            "country": "USA"
-        };
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>验房报告</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <script>
+    window.__REPORT_DATA__ = {
+  "id": "mock_insp_20260316_001",
+  "status": "completed",
+  "pdfInfo": {
+    "bannerUrl": "https://mp-9a185928-f19d-4718-922b-bc72f8dca136.cdn.bspapp.com/images/ScreenShot_2026-10-15_180935_435.png"
+  },
+  "baseInfo": {
+    "estateName": "绿城桂语江南",
+    "unitNo": "3栋2单元1802",
+    "area": "128.5",
+    "layout": "三室两厅两卫",
+    "houseType": "hardcover",
+    "inspectDate": "2026-03-16",
+    "ownerName": "张先生",
+    "ownerPhone": "13800138000"
+  },
+  "checklist": [
+    {
+      "id": "r_mock_entry",
+      "name": "入户门",
+      "issues": [
+        {
+          "id": "i_mock_entry_1",
+          "description": "门锁开启不顺畅，钥匙插入后需反复拨动才能开锁",
+          "suggestion": "联系物业或开发商调整锁芯/锁体，必要时更换五金配件",
+          "severity": "moderate",
+          "images": [
+            {
+              "id": "img_mock_entry_1a",
+              "url": "https://picsum.photos/seed/insp-entry-lock/800/600"
+            }
+          ]
+        },
+        {
+          "id": "i_mock_entry_2",
+          "description": "门扇与门框缝隙不均匀，关闭后下部露缝约 3mm",
+          "suggestion": "调整合页铰链或门扇垂直度，保证四周缝隙均匀",
+          "severity": "minor",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "r_mock_living",
+      "name": "客厅",
+      "issues": [
+        {
+          "id": "i_mock_living_1",
+          "description": "客厅南墙涂料局部有细微开裂，靠近踢脚线处约 20cm 裂纹",
+          "suggestion": "铲除开裂涂层后重新批腻子、打磨并补刷同色涂料",
+          "severity": "minor",
+          "images": [
+            {
+              "id": "img_mock_living_1a",
+              "url": "https://picsum.photos/seed/insp-living-crack/800/600"
+            },
+            {
+              "id": "img_mock_living_1b",
+              "url": "https://picsum.photos/seed/insp-living-crack2/800/600"
+            }
+          ]
+        },
+        {
+          "id": "i_mock_living_2",
+          "description": "木地板局部空鼓，踩踏有明显异响（茶几下方区域）",
+          "suggestion": "切开空鼓区域重新铺贴或注胶加固，复测平整度",
+          "severity": "moderate",
+          "images": [
+            {
+              "id": "img_mock_living_2a",
+              "url": "https://picsum.photos/seed/insp-living-floor/800/600"
+            }
+          ]
+        },
+        {
+          "id": "i_mock_living_3",
+          "description": "客厅开关面板松动，按压时面板晃动",
+          "suggestion": "紧固底盒螺丝并校准面板安装",
+          "severity": "minor",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "r_mock_kitchen",
+      "name": "厨房",
+      "issues": [
+        {
+          "id": "i_mock_kitchen_1",
+          "description": "油烟机烟管与公共烟道接口密封不严，开机有轻微倒烟",
+          "suggestion": "重新做烟管接口密封，检查止回阀是否完好",
+          "severity": "severe",
+          "images": [
+            {
+              "id": "img_mock_kitchen_1a",
+              "url": "https://picsum.photos/seed/insp-kitchen-hood/800/600"
+            },
+            {
+              "id": "img_mock_kitchen_1b",
+              "url": "https://picsum.photos/seed/insp-kitchen-duct/800/600"
+            }
+          ]
+        },
+        {
+          "id": "i_mock_kitchen_2",
+          "description": "橱柜台面与墙面交接处美缝不饱满，存在渗水隐患",
+          "suggestion": "清理后重新打密封胶或美缝，确保防水连续",
+          "severity": "moderate",
+          "images": [
+            {
+              "id": "img_mock_kitchen_2a",
+              "url": "https://picsum.photos/seed/insp-kitchen-counter/800/600"
+            }
+          ]
+        },
+        {
+          "id": "i_mock_kitchen_3",
+          "description": "地漏排水速度偏慢，蓄水约 2cm 时排出较缓",
+          "suggestion": "疏通下水管道并检查地漏箅子是否堵塞",
+          "severity": "minor",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "r_mock_mbath",
+      "name": "主卫",
+      "issues": [
+        {
+          "id": "i_mock_mbath_1",
+          "description": "主卫闭水试验 24 小时后，楼下对应位置天花板出现渗水痕迹",
+          "suggestion": "重做卫生间防水层并复测闭水，确认无渗漏后再恢复面层",
+          "severity": "severe",
+          "images": [
+            {
+              "id": "img_mock_mbath_1a",
+              "url": "https://picsum.photos/seed/insp-mbath-leak/800/600"
+            },
+            {
+              "id": "img_mock_mbath_1b",
+              "url": "https://picsum.photos/seed/insp-mbath-ceiling/800/600"
+            },
+            {
+              "id": "img_mock_mbath_1c",
+              "url": "https://picsum.photos/seed/insp-mbath-floor/800/600"
+            }
+          ]
+        },
+        {
+          "id": "i_mock_mbath_2",
+          "description": "马桶安装不稳，左右晃动，底座密封胶开裂",
+          "suggestion": "重新调平固定马桶，更换底座密封并补打密封胶",
+          "severity": "moderate",
+          "images": [
+            {
+              "id": "img_mock_mbath_2a",
+              "url": "https://picsum.photos/seed/insp-mbath-toilet/800/600"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "r_mock_mbed",
+      "name": "主卧",
+      "issues": [
+        {
+          "id": "i_mock_mbed_1",
+          "description": "主卧窗户密封条局部脱落，关闭后有明显风感",
+          "suggestion": "更换破损密封条，检查窗扇五金锁点是否到位",
+          "severity": "moderate",
+          "images": [
+            {
+              "id": "img_mock_mbed_1a",
+              "url": "https://picsum.photos/seed/insp-mbed-window/800/600"
+            }
+          ]
+        },
+        {
+          "id": "i_mock_mbed_2",
+          "description": "衣柜柜扇关闭后缝隙不均，右侧柜门轻微下垂",
+          "suggestion": "调节柜门铰链高度与水平度",
+          "severity": "minor",
+          "images": []
+        }
+      ]
+    },
+    {
+      "id": "r_mock_balcony",
+      "name": "阳台",
+      "issues": [
+        {
+          "id": "i_mock_balcony_1",
+          "description": "阳台地砖空鼓，敲击有空洞声（靠近排水口区域约 0.3㎡）",
+          "suggestion": "铲除空鼓地砖后重新铺贴，并检查排水坡度",
+          "severity": "moderate",
+          "images": [
+            {
+              "id": "img_mock_balcony_1a",
+              "url": "https://picsum.photos/seed/insp-balcony-tile/800/600"
+            }
+          ]
+        },
+        {
+          "id": "i_mock_balcony_2",
+          "description": "护栏法兰盖缺失 1 处，基座螺丝外露",
+          "suggestion": "补装法兰盖并紧固基座螺丝，做好防锈处理",
+          "severity": "minor",
+          "images": []
+        },
+        {
+          "id": "i_mock_balcony_3",
+          "description": "墙体水分检测偏高（阳台与客厅交接墙面），读数超过正常范围",
+          "suggestion": "排查外墙/窗边渗水点，干燥后复测并视情况处理防水",
+          "severity": "severe",
+          "images": [
+            {
+              "id": "img_mock_balcony_3a",
+              "url": "https://picsum.photos/seed/insp-balcony-moisture/800/600"
+            },
+            {
+              "id": "img_mock_balcony_3b",
+              "url": "https://picsum.photos/seed/insp-balcony-wall/800/600"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "createTime": 1742054400000,
+  "updateTime": 1742140800000
+};
+  </script>
+  <style>
+    :root {
+      --bg: #f2f3f5;
+      --card: #ffffff;
+      --text: #12151a;
+      --muted: #3e4652;
+      --border: #e5e6eb;
+      --minor: #2f7a18;
+      --moderate: #a86b08;
+      --severe: #c43838;
+      --blue: #4c8bf5;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+        "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: #e8eaed;
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    .page {
+      width: 210mm;
+      max-width: 100%;
+      margin: 16px auto;
+      padding: 0 0 28px;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    }
+    .banner {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      max-height: 168px;
+      background: #dde3ea;
+    }
+    .banner-fallback {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 14px;
+      background: linear-gradient(135deg, #dfe7f3, #eef2f7);
+    }
+    .section {
+      margin: 14px 16px 0;
+    }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .chart-grid .span-2 { grid-column: 1 / -1; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .card + .card { margin-top: 12px; }
+    .chart-grid .card + .card { margin-top: 0; }
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .card-sub {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px 16px;
+      margin-top: 14px;
+    }
+    .info-item .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+    .info-item .value {
+      font-size: 14px;
+      font-weight: 500;
+      word-break: break-all;
+    }
+    .chart-box {
+      width: 100%;
+      height: 240px;
+      margin-top: 8px;
+    }
+    .chart-box.tall { height: 260px; }
+    .stat-list {
+      margin-top: 8px;
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 13px;
+    }
+    .stat-row .name { color: #242a33; }
+    .stat-row .meta { color: var(--text); font-variant-numeric: tabular-nums; }
+    .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .table-wrap {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .room-block { margin-top: 16px; }
+    .room-block:first-child { margin-top: 14px; }
+    .room-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding-left: 8px;
+      border-left: 3px solid var(--blue);
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .room-name { font-size: 15px; font-weight: 600; }
+    .room-count { font-size: 12px; color: var(--muted); }
+    table.detail {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      table-layout: fixed;
+    }
+    table.detail thead { display: table-header-group; }
+    table.detail tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    table.detail th,
+    table.detail td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+    table.detail th {
+      background: #f7f8fa;
+      color: #2a3038;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    table.detail tr:last-child td { border-bottom: none; }
+    table.detail .col-idx { width: 36px; color: var(--muted); }
+    table.detail .col-img { width: 34%; }
+    table.detail .col-sev { width: 72px; }
+    .desc-text { color: var(--text); word-break: break-word; }
+    .img-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .img-row img {
+      width: 128px;
+      height: 96px;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #eee;
+      display: block;
+    }
+    .img-empty { color: var(--muted); }
+    .tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      line-height: 18px;
+      white-space: nowrap;
+    }
+    .tag-minor { color: var(--minor); background: rgba(103, 194, 58, 0.12); }
+    .tag-moderate { color: var(--moderate); background: rgba(230, 162, 60, 0.12); }
+    .tag-severe { color: var(--severe); background: rgba(245, 108, 108, 0.12); }
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 0;
+      font-size: 13px;
+    }
+    @media print {
+      body { background: #fff; }
+      .page {
+        width: auto;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+      }
+      .card { box-shadow: none; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Home Inspection</h1>
-    <p>Name: <span id="name"></span></p>
-    <p>Email: <span id="email"></span></p>
-    <p>Phone: <span id="phone"></span></p>
-    <p>Address: <span id="address"></span></p>
-    <p>City: <span id="city"></span></p>
-    <p>State: <span id="state"></span></p>
-    <p>Zip: <span id="zip"></span></p>
-    <p>Country: <span id="country"></span></p>
-    <script>
-        document.getElementById("name").innerHTML = window.__REPORT_DATA__.name;
-        document.getElementById("email").innerHTML = window.__REPORT_DATA__.email;
-        document.getElementById("phone").innerHTML = window.__REPORT_DATA__.phone;
-        document.getElementById("address").innerHTML = window.__REPORT_DATA__.address;
-        document.getElementById("city").innerHTML = window.__REPORT_DATA__.city;
-        document.getElementById("state").innerHTML = window.__REPORT_DATA__.state;
-        document.getElementById("zip").innerHTML = window.__REPORT_DATA__.zip;
-        document.getElementById("country").innerHTML = window.__REPORT_DATA__.country;
-    </script>
+  <div class="page" id="app">
+    <div id="bannerMount"></div>
+
+    <div class="section">
+      <div class="card">
+        <div class="card-title">验房基本信息</div>
+        <div class="info-grid" id="baseInfoGrid"></div>
+      </div>
+    </div>
+
+    <div class="section chart-grid">
+      <div class="card">
+        <div class="card-title">功能间问题占比</div>
+        <div class="card-sub">各功能间问题数量及占比</div>
+        <div class="chart-box" id="chartRoomPie"></div>
+        <div class="stat-list" id="roomPieLegend"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">严重程度分布</div>
+        <div class="card-sub">轻微 / 中等 / 严重</div>
+        <div class="chart-box" id="chartSeverity"></div>
+        <div class="stat-list" id="severityLegend"></div>
+      </div>
+
+      <div class="card span-2">
+        <div class="card-title">功能间问题对比</div>
+        <div class="card-sub">按严重程度堆叠 · 问题数量降序</div>
+        <div class="chart-box tall" id="chartRoomStack"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="card">
+        <div class="card-title">问题明细</div>
+        <div class="card-sub">按功能间列出全部问题项</div>
+        <div id="detailMount"></div>
+        <div class="empty" id="detailEmpty" style="display:none">暂无问题记录</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var ROOM_COLORS = ["#4C8BF5", "#34C759", "#FF9F0A", "#AF52DE", "#5AC8FA", "#FF6259", "#8E8E93"];
+      var SEV = {
+        minor: { key: "minor", label: "轻微", color: "#67C23A" },
+        moderate: { key: "moderate", label: "中等", color: "#E6A23C" },
+        severe: { key: "severe", label: "严重", color: "#F56C6C" }
+      };
+      var HOUSE_TYPE = { hardcover: "精装", rough: "毛坯", simple: "简装" };
+
+      function esc(s) {
+        return String(s == null ? "" : s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function pct(n, total) {
+        if (!total) return "0%";
+        var v = (n * 100) / total;
+        return (Math.round(v * 10) / 10) + "%";
+      }
+
+      function aggregate(checklist) {
+        var rooms = [];
+        var severity = { minor: 0, moderate: 0, severe: 0 };
+        var total = 0;
+
+        (checklist || []).forEach(function (room) {
+          var issues = room.issues || [];
+          if (!issues.length) return;
+          var counts = { minor: 0, moderate: 0, severe: 0 };
+          issues.forEach(function (issue) {
+            var k = SEV[issue.severity] ? issue.severity : "minor";
+            counts[k] += 1;
+            severity[k] += 1;
+            total += 1;
+          });
+          rooms.push({
+            name: room.name,
+            total: issues.length,
+            minor: counts.minor,
+            moderate: counts.moderate,
+            severe: counts.severe
+          });
+        });
+
+        rooms.sort(function (a, b) { return b.total - a.total; });
+        return { rooms: rooms, severity: severity, total: total };
+      }
+
+      function renderBanner(data) {
+        var mount = document.getElementById("bannerMount");
+        var url = data && data.pdfInfo && data.pdfInfo.bannerUrl;
+        if (!url) {
+          mount.innerHTML = '<div class="banner-fallback">验房报告</div>';
+          return;
+        }
+        mount.innerHTML = '<img class="banner" alt="banner" src="' + esc(url) + '" />';
+        var img = mount.querySelector("img");
+        img.onerror = function () {
+          mount.innerHTML = '<div class="banner-fallback">验房报告</div>';
+        };
+      }
+
+      function renderBaseInfo(base) {
+        base = base || {};
+        var items = [
+          ["楼盘名称", base.estateName],
+          ["房号", base.unitNo],
+          ["面积", base.area ? base.area + " ㎡" : ""],
+          ["户型", base.layout],
+          ["装修类型", HOUSE_TYPE[base.houseType] || base.houseType || ""],
+          ["验房日期", base.inspectDate],
+          ["业主", base.ownerName],
+          ["联系电话", base.ownerPhone]
+        ];
+        document.getElementById("baseInfoGrid").innerHTML = items.map(function (pair) {
+          return (
+            '<div class="info-item">' +
+              '<div class="label">' + esc(pair[0]) + '</div>' +
+              '<div class="value">' + esc(pair[1] || "-") + '</div>' +
+            '</div>'
+          );
+        }).join("");
+      }
+
+      function renderStatList(el, rows) {
+        el.innerHTML = rows.map(function (r) {
+          return (
+            '<div class="stat-row">' +
+              '<span class="name"><span class="dot" style="background:' + r.color + '"></span>' + esc(r.name) + '</span>' +
+              '<span class="meta">' + esc(r.meta) + '</span>' +
+            '</div>'
+          );
+        }).join("");
+      }
+
+      function initPie(rooms, total) {
+        var el = document.getElementById("chartRoomPie");
+        var chart = echarts.init(el, null, { renderer: "svg" });
+        var seriesData = rooms.map(function (r, i) {
+          return {
+            name: r.name,
+            value: r.total,
+            itemStyle: { color: ROOM_COLORS[i % ROOM_COLORS.length] }
+          };
+        });
+
+        chart.setOption({
+          animation: false,
+          tooltip: { show: false },
+          legend: { show: false },
+          series: [{
+            type: "pie",
+            radius: ["42%", "68%"],
+            center: ["50%", "50%"],
+            avoidLabelOverlap: true,
+            label: {
+              formatter: "{b}:{c}处",
+              fontSize: 11,
+              color: "#242a33"
+            },
+            labelLine: { length: 10, length2: 8 },
+            data: seriesData.length ? seriesData : [{ name: "暂无", value: 0, itemStyle: { color: "#d0d3d9" } }]
+          }],
+          graphic: [{
+            type: "group",
+            left: "center",
+            top: "middle",
+            children: [
+              {
+                type: "text",
+                style: {
+                  text: String(total),
+                  fill: "#12151a",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  align: "center",
+                  textAlign: "center"
+                },
+                top: -14
+              },
+              {
+                type: "text",
+                style: {
+                  text: "问题总数",
+                  fill: "#3e4652",
+                  fontSize: 12,
+                  align: "center",
+                  textAlign: "center"
+                },
+                top: 16
+              }
+            ]
+          }]
+        });
+
+        renderStatList(
+          document.getElementById("roomPieLegend"),
+          rooms.map(function (r, i) {
+            return {
+              name: r.name,
+              color: ROOM_COLORS[i % ROOM_COLORS.length],
+              meta: r.total + "处 (" + pct(r.total, total) + ")"
+            };
+          })
+        );
+      }
+
+      function initStack(rooms) {
+        var el = document.getElementById("chartRoomStack");
+        var chart = echarts.init(el, null, { renderer: "svg" });
+        var names = rooms.map(function (r) { return r.name; });
+        var minor = rooms.map(function (r) { return r.minor; });
+        var moderate = rooms.map(function (r) { return r.moderate; });
+        var severe = rooms.map(function (r) { return r.severe; });
+        var totals = rooms.map(function (r) { return r.total; });
+        var maxY = Math.max.apply(null, totals.concat([1]));
+
+        chart.setOption({
+          animation: false,
+          tooltip: { show: false },
+          legend: {
+            top: 0,
+            right: 0,
+            itemWidth: 10,
+            itemHeight: 10,
+            textStyle: { fontSize: 11, color: "#2a3038" },
+            data: [
+              { name: "轻微", itemStyle: { color: SEV.minor.color } },
+              { name: "中等", itemStyle: { color: SEV.moderate.color } },
+              { name: "严重", itemStyle: { color: SEV.severe.color } }
+            ]
+          },
+          grid: { left: 36, right: 12, top: 36, bottom: 28 },
+          xAxis: {
+            type: "category",
+            data: names,
+            axisTick: { show: false },
+            axisLine: { lineStyle: { color: "#e5e6eb" } },
+            axisLabel: {
+              color: "#2a3038",
+              fontSize: 11,
+              interval: 0,
+              rotate: names.length > 4 ? 30 : 0
+            }
+          },
+          yAxis: {
+            type: "value",
+            minInterval: 1,
+            max: maxY,
+            splitLine: { lineStyle: { type: "dashed", color: "#e5e6eb" } },
+            axisLabel: { color: "#3e4652", fontSize: 11 }
+          },
+          series: [
+            {
+              name: "轻微",
+              type: "bar",
+              stack: "sev",
+              barMaxWidth: 36,
+              itemStyle: { color: SEV.minor.color },
+              label: {
+                show: true,
+                position: "inside",
+                formatter: function (p) { return p.value > 0 ? p.value : ""; },
+                color: "#fff",
+                fontSize: 11
+              },
+              data: minor
+            },
+            {
+              name: "中等",
+              type: "bar",
+              stack: "sev",
+              barMaxWidth: 36,
+              itemStyle: { color: SEV.moderate.color },
+              label: {
+                show: true,
+                position: "inside",
+                formatter: function (p) { return p.value > 0 ? p.value : ""; },
+                color: "#fff",
+                fontSize: 11
+              },
+              data: moderate
+            },
+            {
+              name: "严重",
+              type: "bar",
+              stack: "sev",
+              barMaxWidth: 36,
+              itemStyle: { color: SEV.severe.color },
+              label: {
+                show: true,
+                position: "inside",
+                formatter: function (p) { return p.value > 0 ? p.value : ""; },
+                color: "#fff",
+                fontSize: 11
+              },
+              data: severe,
+              markPoint: {
+                symbol: "circle",
+                symbolSize: 0.1,
+                label: {
+                  show: true,
+                  formatter: function (p) { return totals[p.dataIndex]; },
+                  color: "#12151a",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  position: "top",
+                  distance: 6
+                },
+                data: totals.map(function (t, i) {
+                  return { coord: [i, t], value: t };
+                })
+              }
+            }
+          ]
+        });
+      }
+
+      function initSeverity(severity, total) {
+        var el = document.getElementById("chartSeverity");
+        var chart = echarts.init(el, null, { renderer: "svg" });
+        var order = [SEV.minor, SEV.moderate, SEV.severe];
+        var values = order.map(function (s) { return severity[s.key] || 0; });
+        var maxX = Math.max.apply(null, values.concat([1]));
+
+        chart.setOption({
+          animation: false,
+          tooltip: { show: false },
+          grid: { left: 48, right: 28, top: 12, bottom: 28 },
+          xAxis: {
+            type: "value",
+            min: 0,
+            max: maxX,
+            minInterval: 1,
+            splitLine: { lineStyle: { color: "#eceff3" } },
+            axisLabel: { color: "#3e4652", fontSize: 11 }
+          },
+          yAxis: {
+            type: "category",
+            data: order.map(function (s) { return s.label; }),
+            inverse: true,
+            axisTick: { show: false },
+            axisLine: { show: false },
+            axisLabel: { color: "#2a3038", fontSize: 12 }
+          },
+          series: [{
+            type: "bar",
+            barMaxWidth: 18,
+            data: values.map(function (v, i) {
+              return { value: v, itemStyle: { color: order[i].color, borderRadius: [0, 4, 4, 0] } };
+            }),
+            label: {
+              show: true,
+              position: "right",
+              color: "#12151a",
+              fontSize: 12
+            }
+          }]
+        });
+
+        renderStatList(
+          document.getElementById("severityLegend"),
+          order.map(function (s) {
+            var n = severity[s.key] || 0;
+            return {
+              name: s.label,
+              color: s.color,
+              meta: n + "处 (" + pct(n, total) + ")"
+            };
+          })
+        );
+      }
+
+      function renderImages(images) {
+        var list = (images || []).filter(function (img) { return img && img.url; });
+        if (!list.length) return '<span class="img-empty">-</span>';
+        return (
+          '<div class="img-row">' +
+          list.map(function (img) {
+            return '<img src="' + esc(img.url) + '" alt="" />';
+          }).join("") +
+          "</div>"
+        );
+      }
+
+      function renderTable(checklist) {
+        var mount = document.getElementById("detailMount");
+        var empty = document.getElementById("detailEmpty");
+        var blocks = [];
+
+        (checklist || []).forEach(function (room) {
+          var issues = room.issues || [];
+          if (!issues.length) return;
+          var rows = issues.map(function (issue, i) {
+            var sev = SEV[issue.severity] || SEV.minor;
+            return (
+              "<tr>" +
+                '<td class="col-idx">' + (i + 1) + "</td>" +
+                '<td><div class="desc-text">' + esc(issue.description || "") + "</div></td>" +
+                '<td class="col-img">' + renderImages(issue.images) + "</td>" +
+                "<td>" + esc(issue.suggestion || "-") + "</td>" +
+                '<td class="col-sev"><span class="tag tag-' + sev.key + '">' + esc(sev.label) + "</span></td>" +
+              "</tr>"
+            );
+          });
+          blocks.push(
+            '<section class="room-block">' +
+              '<div class="room-head">' +
+                '<div class="room-name">' + esc(room.name) + "</div>" +
+                '<div class="room-count">' + issues.length + " 项</div>" +
+              "</div>" +
+              '<div class="table-wrap">' +
+                '<table class="detail">' +
+                  "<thead><tr>" +
+                    '<th class="col-idx">#</th>' +
+                    "<th>问题描述</th>" +
+                    '<th class="col-img">现场图片</th>' +
+                    "<th>整改建议</th>" +
+                    '<th class="col-sev">严重程度</th>' +
+                  "</tr></thead>" +
+                  "<tbody>" + rows.join("") + "</tbody>" +
+                "</table>" +
+              "</div>" +
+            "</section>"
+          );
+        });
+
+        if (!blocks.length) {
+          mount.innerHTML = "";
+          empty.style.display = "block";
+          return;
+        }
+        empty.style.display = "none";
+        mount.innerHTML = blocks.join("");
+      }
+
+      function main() {
+        var data = window.__REPORT_DATA__ || {};
+        renderBanner(data);
+        renderBaseInfo(data.baseInfo);
+        var stats = aggregate(data.checklist);
+        if (typeof echarts === "undefined") {
+          document.getElementById("chartRoomPie").innerHTML =
+            '<div class="empty">图表库加载失败</div>';
+        } else {
+          initPie(stats.rooms, stats.total);
+          initStack(stats.rooms);
+          initSeverity(stats.severity, stats.total);
+        }
+        renderTable(data.checklist);
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", main);
+      } else {
+        main();
+      }
+    })();
+  </script>
 </body>
 </html>

@@ -45,8 +45,17 @@ func TestConvertHTML(t *testing.T) {
 		if err := r.ParseMultipartForm(10 << 20); err != nil {
 			t.Fatal(err)
 		}
-		if got := r.FormValue("waitDelay"); got != "500ms" {
+		if got := r.FormValue("waitDelay"); got != "2s" {
 			t.Fatalf("waitDelay=%q", got)
+		}
+		if got := r.FormValue("paperWidth"); got != "8.27" {
+			t.Fatalf("paperWidth=%q", got)
+		}
+		if got := r.FormValue("preferCssPageSize"); got != "true" {
+			t.Fatalf("preferCssPageSize=%q", got)
+		}
+		if got := r.FormValue("printBackground"); got != "true" {
+			t.Fatalf("printBackground=%q", got)
 		}
 		f, _, err := r.FormFile("files")
 		if err != nil {

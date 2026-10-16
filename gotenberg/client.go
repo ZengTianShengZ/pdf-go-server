@@ -61,9 +61,25 @@ func (c *Client) ConvertHTML(ctx context.Context, html []byte) ([]byte, error) {
 	if _, err := part.Write(html); err != nil {
 		return nil, err
 	}
-	// Spec: wait 0.5s for template JS; Gotenberg expects a duration string.
-	if err := w.WriteField("waitDelay", "500ms"); err != nil {
+	// Wait for template JS + ECharts CDN/SVG init before Chromium captures PDF.
+	if err := w.WriteField("waitDelay", "2s"); err != nil {
 		return nil, err
+	}
+	// A4. Form margins override @page; print backgrounds so tags and cards keep color.
+	fields := [][2]string{
+		{"paperWidth", "8.27"},
+		{"paperHeight", "11.69"},
+		{"preferCssPageSize", "true"},
+		{"printBackground", "true"},
+		{"marginTop", "0.47"},
+		{"marginBottom", "0.55"},
+		{"marginLeft", "0.47"},
+		{"marginRight", "0.47"},
+	}
+	for _, field := range fields {
+		if err := w.WriteField(field[0], field[1]); err != nil {
+			return nil, err
+		}
 	}
 	if err := w.Close(); err != nil {
 		return nil, err
