@@ -2,7 +2,11 @@
   "id": "mock_insp_20260316_001",
   "status": "completed",
   "pdfInfo": {
-    "bannerUrl": "https://mp-9a185928-f19d-4718-922b-bc72f8dca136.cdn.bspapp.com/images/ScreenShot_2026-10-15_180935_435.png"
+    "bannerUrl": "https://mp-9a185928-f19d-4718-922b-bc72f8dca136.cdn.bspapp.com/images/ScreenShot_2026-10-15_180935_435.png",
+    "reportNumber": "202610111647JJK9ZF",
+    "reportWriter": "曾工",
+    "reportDate": "2026-10-16",
+    "inspectionStatement":  "【委托书】： 应业主委托，【reportWriter】 于 【reportDate】 日对该处房屋当前建筑质量进行查验，查验结果如下，相关问题均已在室内相关位置标记。"
   },
   "baseInfo": {
     "estateName": "绿城桂语江南",

@@ -10,7 +10,11 @@
   "id": "mock_insp_20260316_001",
   "status": "completed",
   "pdfInfo": {
-    "bannerUrl": "https://mp-9a185928-f19d-4718-922b-bc72f8dca136.cdn.bspapp.com/images/ScreenShot_2026-10-15_180935_435.png"
+    "bannerUrl": "https://mp-9a185928-f19d-4718-922b-bc72f8dca136.cdn.bspapp.com/images/ScreenShot_2026-10-15_180935_435.png",
+    "reportNumber": "202610111647JJK9ZF",
+    "reportWriter": "曾工",
+    "reportDate": "2026-10-16",
+    "inspectionStatement": "【委托书】： 应业主委托，【reportWriter】 于 【reportDate】 日对该处房屋当前建筑质量进行查验，查验结果如下，相关问题均已在室内相关位置标记。"
   },
   "baseInfo": {
     "estateName": "绿城桂语江南",
@@ -273,25 +277,88 @@
       background: #fff;
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     }
-    .banner {
+    .sheet {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      break-after: page;
+      page-break-after: always;
+    }
+    .sheet-banner .banner,
+    .sheet-banner .banner-fallback {
       width: 100%;
-      display: block;
+      height: 250mm;
+      max-height: none;
       object-fit: cover;
-      max-height: 168px;
+      display: block;
       background: #dde3ea;
     }
     .banner-fallback {
-      height: 160px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 18px;
       background: linear-gradient(135deg, #dfe7f3, #eef2f7);
     }
-    .section {
-      margin: 14px 16px 0;
+    .sheet-cover { padding: 28mm 18mm 16mm; }
+    .cover-title {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 0.42em;
+      text-indent: 0.42em;
+      margin-bottom: 40px;
     }
+    .cover-row {
+      padding: 11px 0;
+      font-size: 16px;
+      text-align: center;
+    }
+    .cover-label,
+    .cover-value { display: inline; }
+    .cover-label { margin-right: 1.2em; }
+    table.meta {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    table.meta th,
+    table.meta td {
+      border: 1px solid #12151a;
+      text-align: center;
+      vertical-align: middle;
+      padding: 12px 8px;
+    }
+    table.meta .label-cell { width: 22%; font-weight: 600; }
+    table.meta .zh { display: block; font-size: 14px; line-height: 1.4; }
+    table.meta .en { display: block; margin-top: 2px; font-size: 11px; font-weight: 400; color: var(--muted); }
+    table.meta .section-head { padding: 14px 8px; }
+    table.meta .section-head .zh { font-size: 16px; font-weight: 600; }
+    table.meta .statement {
+      text-align: left;
+      line-height: 1.85;
+      padding: 16px 14px;
+      font-weight: 400;
+    }
+    .sheet-base,
+    .sheet-charts { padding: 6mm 14mm 0; }
+    .sheet-title {
+      margin-bottom: 12px;
+      font-size: 17px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .sheet-charts .section { margin: 0; }
+    .sheet-charts .card,
+    .section-detail .card,
+    .section-detail .table-wrap { border-radius: 0; }
+    .section-detail .card-title { text-align: center; }
+    .sheet-charts .chart-box { height: 200px; }
+    .sheet-charts .chart-box.tall { height: 210px; }
+    /* .section {
+      margin: 14px 16px 0;
+    } */
+    /* .section.section-detail { margin: 14px 14mm 0; } */
     .chart-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -439,6 +506,21 @@
       padding: 24px 0;
       font-size: 13px;
     }
+    @media screen {
+      .page {
+        background: transparent;
+        box-shadow: none;
+        padding-bottom: 0;
+      }
+      .sheet {
+        background: #fff;
+        min-height: 297mm;
+        margin-bottom: 16px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      }
+      .sheet-banner .banner,
+      .sheet-banner .banner-fallback { height: 297mm; }
+    }
     @media print {
       body { background: #fff; }
       .page {
@@ -446,6 +528,13 @@
         margin: 0;
         padding: 0;
         box-shadow: none;
+        background: #fff;
+      }
+      .sheet {
+        min-height: 0;
+        margin: 0;
+        box-shadow: none;
+        background: #fff;
       }
       .card { box-shadow: none; }
     }
@@ -453,15 +542,16 @@
 </head>
 <body>
   <div class="page" id="app">
-    <div id="bannerMount"></div>
+    <section class="sheet sheet-banner" id="bannerMount"></section>
 
-    <div class="section">
-      <div class="card">
-        <div class="card-title">验房基本信息</div>
-        <div class="info-grid" id="baseInfoGrid"></div>
-      </div>
-    </div>
+    <section class="sheet sheet-cover" id="coverSheet"></section>
 
+    <section class="sheet sheet-base">
+      <table class="meta" id="baseInfoTable"></table>
+    </section>
+
+    <section class="sheet sheet-charts">
+    <div class="sheet-title">检验概览</div>
     <div class="section chart-grid">
       <div class="card">
         <div class="card-title">功能间问题占比</div>
@@ -483,10 +573,11 @@
         <div class="chart-box tall" id="chartRoomStack"></div>
       </div>
     </div>
+    </section>
 
-    <div class="section">
+    <div class="section section-detail">
       <div class="card">
-        <div class="card-title">问题明细</div>
+        <div class="card-title">检验明细</div>
         <div class="card-sub">按功能间列出全部问题项</div>
         <div id="detailMount"></div>
         <div class="empty" id="detailEmpty" style="display:none">暂无问题记录</div>
@@ -553,33 +644,94 @@
           mount.innerHTML = '<div class="banner-fallback">验房报告</div>';
           return;
         }
-        mount.innerHTML = '<img class="banner" alt="banner" src="' + esc(url) + '" />';
+        mount.innerHTML = '<img class="banner" alt="封面" src="' + esc(url) + '" />';
         var img = mount.querySelector("img");
         img.onerror = function () {
           mount.innerHTML = '<div class="banner-fallback">验房报告</div>';
         };
       }
 
-      function renderBaseInfo(base) {
-        base = base || {};
-        var items = [
-          ["楼盘名称", base.estateName],
-          ["房号", base.unitNo],
-          ["面积", base.area ? base.area + " ㎡" : ""],
-          ["户型", base.layout],
-          ["装修类型", HOUSE_TYPE[base.houseType] || base.houseType || ""],
-          ["验房日期", base.inspectDate],
-          ["业主", base.ownerName],
-          ["联系电话", base.ownerPhone]
+      function dash(v) {
+        return v == null || v === "" ? "-" : String(v);
+      }
+
+      function houseTypeLabel(value) {
+        return HOUSE_TYPE[value] || value || "";
+      }
+
+      function fillStatement(tpl, writer, date) {
+        return String(tpl || "")
+          .replace(/【reportWriter】/g, writer || "")
+          .replace(/【reportDate】/g, date || "");
+      }
+
+      function renderCover(data) {
+        var pdf = (data && data.pdfInfo) || {};
+        var base = (data && data.baseInfo) || {};
+        var address = [base.estateName, base.unitNo].filter(Boolean).join(" ");
+        var rows = [
+          ["报告编号", pdf.reportNumber],
+          ["项目接收地址", address],
+          ["委托人", base.ownerName],
+          ["房屋类型", houseTypeLabel(base.houseType)],
+          ["验房报告撰写", pdf.reportWriter],
+          ["报告签发日期", pdf.reportDate]
         ];
-        document.getElementById("baseInfoGrid").innerHTML = items.map(function (pair) {
-          return (
-            '<div class="info-item">' +
-              '<div class="label">' + esc(pair[0]) + '</div>' +
-              '<div class="value">' + esc(pair[1] || "-") + '</div>' +
-            '</div>'
-          );
-        }).join("");
+        document.getElementById("coverSheet").innerHTML =
+          '<div class="cover-title">房屋查验报告</div>' +
+          rows.map(function (pair) {
+            return (
+              '<div class="cover-row">' +
+                '<div class="cover-label">' + esc(pair[0]) + "</div>" +
+                '<div class="cover-value">' + esc(dash(pair[1])) + "</div>" +
+              "</div>"
+            );
+          }).join("");
+      }
+
+      function labelCell(zh, en) {
+        return (
+          '<td class="label-cell"><span class="zh">' + esc(zh) + "</span>" +
+          '<span class="en">' + esc(en) + "</span></td>"
+        );
+      }
+
+      function valueCell(text, colspan) {
+        return "<td" + (colspan ? ' colspan="' + colspan + '"' : "") + ">" + esc(dash(text)) + "</td>";
+      }
+
+      function sectionHead(zh, en) {
+        return (
+          '<tr><th class="section-head" colspan="4">' +
+            '<span class="zh">' + esc(zh) + "</span>" +
+            '<span class="en">' + esc(en) + "</span>" +
+          "</th></tr>"
+        );
+      }
+
+      function renderBaseInfo(data) {
+        var pdf = (data && data.pdfInfo) || {};
+        var base = (data && data.baseInfo) || {};
+        var houseType = houseTypeLabel(base.houseType);
+        var area = base.area ? base.area + " m²" : "";
+        var reportDate = pdf.reportDate || base.inspectDate;
+        var statement = fillStatement(pdf.inspectionStatement, pdf.reportWriter, reportDate);
+        var address = base.address || "";
+
+        document.getElementById("baseInfoTable").innerHTML =
+          sectionHead("基础信息", "Basic Information Of Report") +
+          "<tr>" + labelCell("报告编号", "Report No.") + valueCell(pdf.reportNumber) +
+            labelCell("房屋类型", "Type Of House") + valueCell(houseType) + "</tr>" +
+          "<tr>" + labelCell("委托人", "Client") + valueCell(base.ownerName) +
+            labelCell("联系方式", "Mobile Phone") + valueCell(base.ownerPhone) + "</tr>" +
+          "<tr>" + labelCell("项目楼盘", "Project") + valueCell(base.estateName, 3) + "</tr>" +
+          "<tr>" + labelCell("门牌号", "House No.") + valueCell(base.unitNo) +
+            labelCell("房屋面积", "Area Of House") + valueCell(area) + "</tr>" +
+          "<tr>" + labelCell("验房师", "Inspector") + valueCell(pdf.reportWriter) +
+            labelCell("报告日期", "Date of issue") + valueCell(reportDate) + "</tr>" +
+          "<tr>" + labelCell("项目地址", "Address Of Project") + valueCell(address, 3) + "</tr>" +
+          sectionHead("查验声明", "Inspection Statement") +
+          '<tr><td class="statement" colspan="4">' + esc(statement) + "</td></tr>";
       }
 
       function renderStatList(el, rows) {
@@ -897,7 +1049,8 @@
       function main() {
         var data = window.__REPORT_DATA__ || {};
         renderBanner(data);
-        renderBaseInfo(data.baseInfo);
+        renderCover(data);
+        renderBaseInfo(data);
         var stats = aggregate(data.checklist);
         if (typeof echarts === "undefined") {
           document.getElementById("chartRoomPie").innerHTML =
