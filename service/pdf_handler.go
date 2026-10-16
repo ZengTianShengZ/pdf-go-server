@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"pdf-go-server/gotenberg"
 )
@@ -49,47 +50,78 @@ func (s *Server) Health(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) PDF(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	reqID := r.Header.Get("X-Request-Id")
+	if reqID == "" {
+		reqID = r.Header.Get("X-Cloudbase-Request-Id")
+	}
+	if reqID == "" {
+		reqID = "-"
+	}
+	logf := func(format string, args ...any) {
+		log.Printf("[pdf req=%s] "+format, append([]any{reqID}, args...)...)
+	}
+
 	if r.Method != http.MethodPost {
+		logf("reject method=%s", r.Method)
 		writeErr(w, http.StatusMethodNotAllowed, "method not allowed")
 		return
 	}
 
 	body, err := io.ReadAll(io.LimitReader(r.Body, maxBodyBytes+1))
 	if err != nil {
+		logf("read body failed: %v", err)
 		writeErr(w, http.StatusBadRequest, "failed to read body")
 		return
 	}
 	if len(body) > maxBodyBytes {
+		logf("body too large: %d bytes", len(body))
 		writeErr(w, http.StatusBadRequest, "body too large")
 		return
 	}
 
 	if err := EnsureJSONObjectRoot(body); err != nil {
+		logf("json root invalid: %v bodyBytes=%d", err, len(body))
 		writeErr(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	var obj map[string]any
 	if err := json.Unmarshal(body, &obj); err != nil {
+		logf("json unmarshal failed: %v bodyBytes=%d", err, len(body))
 		writeErr(w, http.StatusBadRequest, "invalid JSON")
 		return
 	}
 
+	reportID, _ := obj["id"].(string)
+	outMode := "binary"
+	if wantBase64PDF(r) {
+		outMode = "base64"
+	}
+	logf("start reportId=%q bodyBytes=%d outMode=%s accept=%q xPdfEnc=%q format=%q assets=%d",
+		reportID, len(body), outMode, r.Header.Get("Accept"),
+		r.Header.Get("X-PDF-Encoding"), r.URL.Query().Get("format"), len(s.Assets))
+
 	marshaled, err := json.Marshal(obj)
 	if err != nil {
+		logf("json remarshal failed: %v", err)
 		writeErr(w, http.StatusBadRequest, "invalid JSON")
 		return
 	}
 
 	html, err := InjectReportData(s.TemplatePath, marshaled)
 	if err != nil {
+		logf("template inject failed: %v", err)
 		writeErr(w, http.StatusInternalServerError, "template inject failed")
 		return
 	}
+	logf("template injected htmlBytes=%d", len(html))
 
+	convertStart := time.Now()
 	pdf, err := s.Converter.ConvertHTML(r.Context(), html, s.Assets...)
+	convertMs := time.Since(convertStart).Milliseconds()
 	if err != nil {
-		log.Printf("pdf convert error: %v", err)
+		logf("convert error after %dms: %v", convertMs, err)
 		switch {
 		case errors.Is(err, gotenberg.ErrTimeout):
 			writeErr(w, http.StatusGatewayTimeout, "pdf conversion timed out")
@@ -102,23 +134,32 @@ func (s *Server) PDF(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !strings.HasPrefix(string(pdf), "%PDF") {
-		log.Printf("pdf convert returned non-pdf payload (%d bytes)", len(pdf))
+		preview := string(pdf)
+		if len(preview) > 80 {
+			preview = preview[:80]
+		}
+		logf("convert returned non-pdf after %dms pdfBytes=%d preview=%q", convertMs, len(pdf), preview)
 		writeErr(w, http.StatusBadGateway, "pdf conversion returned invalid document")
 		return
 	}
 
 	// WeChat Cloud / callContainer defaults to JSON+text and mangles binary PDF.
 	// Prefer base64 JSON when clients ask for it (or Accept: application/json).
-	if wantBase64PDF(r) {
+	if outMode == "base64" {
+		b64 := base64.StdEncoding.EncodeToString(pdf)
+		logf("ok outMode=base64 pdfBytes=%d b64Chars=%d convertMs=%d totalMs=%d",
+			len(pdf), len(b64), convertMs, time.Since(start).Milliseconds())
 		writeJSON(w, http.StatusOK, map[string]any{
 			"filename":  "report.pdf",
 			"mimeType":  "application/pdf",
 			"size":      len(pdf),
-			"pdfBase64": base64.StdEncoding.EncodeToString(pdf),
+			"pdfBase64": b64,
 		})
 		return
 	}
 
+	logf("ok outMode=binary pdfBytes=%d convertMs=%d totalMs=%d",
+		len(pdf), convertMs, time.Since(start).Milliseconds())
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", `attachment; filename="report.pdf"`)
 	w.Header().Set("Content-Length", strconv.Itoa(len(pdf)))
