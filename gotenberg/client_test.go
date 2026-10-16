@@ -57,18 +57,27 @@ func TestConvertHTML(t *testing.T) {
 		if got := r.FormValue("printBackground"); got != "true" {
 			t.Fatalf("printBackground=%q", got)
 		}
-		f, _, err := r.FormFile("files")
-		if err != nil {
-			t.Fatal(err)
+		files := r.MultipartForm.File["files"]
+		if len(files) != 2 {
+			t.Fatalf("files=%d", len(files))
 		}
-		defer f.Close()
+		names := map[string]bool{}
+		for _, fh := range files {
+			names[fh.Filename] = true
+		}
+		if !names["index.html"] || !names["echarts.min.js"] {
+			t.Fatalf("filenames %+v", names)
+		}
 		w.Header().Set("Content-Type", "application/pdf")
 		_, _ = w.Write([]byte("%PDF-1.4 fake"))
 	}))
 	defer srv.Close()
 
 	c := New(srv.URL, 5*time.Second)
-	pdf, err := c.ConvertHTML(context.Background(), []byte("<html></html>"))
+	pdf, err := c.ConvertHTML(context.Background(), []byte("<html></html>"), Asset{
+		Name: "echarts.min.js",
+		Data: []byte("/*echarts*/"),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

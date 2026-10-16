@@ -9,6 +9,7 @@ import (
 	"mime/multipart"
 	"net"
 	"net/http"
+	"path"
 	"time"
 )
 
@@ -17,6 +18,12 @@ var (
 	ErrTimeout     = errors.New("gotenberg timeout")
 	ErrConvert     = errors.New("gotenberg convert failed")
 )
+
+// Asset is an extra file uploaded alongside index.html (same relative path in Chromium).
+type Asset struct {
+	Name string
+	Data []byte
+}
 
 type Client struct {
 	baseURL    string
@@ -50,7 +57,7 @@ func (c *Client) Healthy(ctx context.Context) error {
 	return nil
 }
 
-func (c *Client) ConvertHTML(ctx context.Context, html []byte) ([]byte, error) {
+func (c *Client) ConvertHTML(ctx context.Context, html []byte, assets ...Asset) ([]byte, error) {
 	var buf bytes.Buffer
 	w := multipart.NewWriter(&buf)
 
@@ -61,7 +68,21 @@ func (c *Client) ConvertHTML(ctx context.Context, html []byte) ([]byte, error) {
 	if _, err := part.Write(html); err != nil {
 		return nil, err
 	}
-	// Wait for template JS + ECharts CDN/SVG init before Chromium captures PDF.
+	for _, asset := range assets {
+		// mime/multipart FileName() uses filepath.Base — keep names flat.
+		name := path.Base(path.Clean("/" + asset.Name))
+		if name == "" || name == "." || name == "/" {
+			return nil, fmt.Errorf("%w: invalid asset name", ErrConvert)
+		}
+		ap, err := w.CreateFormFile("files", name)
+		if err != nil {
+			return nil, err
+		}
+		if _, err := ap.Write(asset.Data); err != nil {
+			return nil, err
+		}
+	}
+	// Wait for template JS + chart init before Chromium captures PDF.
 	if err := w.WriteField("waitDelay", "2s"); err != nil {
 		return nil, err
 	}
