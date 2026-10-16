@@ -50,7 +50,7 @@ Gotenberg (127.0.0.1:3000)  ← 仅容器内访问
 | Content-Type | `application/json` |
 | Body | 任意 JSON 对象（字段与模板约定一致，如 `name`、`email`、`phone`、`address`、`city`、`state`、`zip`、`country`） |
 | 成功 | `200`，`Content-Type: application/pdf`，body 为 PDF 二进制 |
-| 失败 | `4xx/5xx` + JSON：`{ "code": <int>, "message": "<string>" }` |
+| 失败 | `4xx/5xx` + JSON：`{ "code": <int>, "message": "<string>" }`，其中 `code` 等于 HTTP 状态码 |
 
 ### `GET /health`
 
@@ -138,6 +138,6 @@ curl -X POST http://localhost:8080/api/pdf \
 | 风险 | 缓解 |
 |---|---|
 | 镜像体积大（含 Chromium） | 接受；以官方 Gotenberg 镜像为 runtime 基底 |
-| JS 未执行完就截 PDF | 使用 waitDelay / waitForExpression |
+| JS 未执行完就截 PDF | 固定使用 `waitDelay=0.5` |
 | JSON 注入破坏 HTML/JS | 用 `json.Marshal` 结果只替换赋值右侧 `{...}`，保留 `window.__REPORT_DATA__ =` |
 | 双进程启动竞态 | entrypoint 等待 Gotenberg health 就绪后再起 Go；`/health` 与 PDF 路径对不可达返回明确错误 |
