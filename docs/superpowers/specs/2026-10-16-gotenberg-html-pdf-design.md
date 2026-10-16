@@ -54,15 +54,19 @@ Gotenberg (127.0.0.1:3000)  ← 仅容器内访问
 
 ### `GET /health`
 
-返回 `200` `{ "status": "ok" }`。实现时可探测本机 Gotenberg 是否可达；不可达时返回非 200。
+**必须实现。** 探测本机 Gotenberg（例如请求其 health 端点）：
+
+- 可达：`200` `{ "status": "ok" }`
+- 不可达：`503` `{ "status": "unavailable", "message": "gotenberg unreachable" }`
 
 ### 错误映射
 
 | 情况 | HTTP |
 |---|---|
-| Body 非合法 JSON | 400 |
+| Body 非合法 JSON，或根值不是 JSON object（`{}`） | 400 |
 | 模板缺失 / 注入失败 | 500 |
-| Gotenberg 不可达或转换失败 | 502 / 500 |
+| Gotenberg 不可达 | 502 |
+| Gotenberg 转换失败（非超时） | 500 |
 | 转换超时（默认 60s） | 504 |
 
 ## 模板注入
@@ -76,9 +80,9 @@ window.__REPORT_DATA__ = { /* 示例数据 */ };
 服务行为：
 
 1. 从 `template/v1-home-inspection.html` 读取完整 HTML
-2. 将 `window.__REPORT_DATA__ = ...;` 替换为请求 body 的 JSON（序列化为合法 JS 对象字面量）
+2. 用 `json.Marshal` 将请求 body（必须是 JSON object）序列化，**只替换** `window.__REPORT_DATA__ =` 右侧的对象字面量 `{...}`，**保留** `window.__REPORT_DATA__ = ...;` 赋值语句本身
 3. 将结果作为 `index.html` 以 multipart 提交到 Gotenberg：`POST /forms/chromium/convert/html`
-4. 设置适当等待（`waitDelay` 或 `waitForExpression`），确保模板内填充 DOM 的脚本执行后再出 PDF
+4. 使用固定等待：`waitDelay=0.5`（秒），确保模板内填充 DOM 的脚本执行后再出 PDF
 
 不在服务端用 Go template 引擎渲染 DOM；保留现有客户端 JS 填充方式，由 Chromium 执行。
 
@@ -125,9 +129,9 @@ curl -X POST http://localhost:8080/api/pdf \
 验收标准：
 
 - 容器单端口可访问
-- 合法 JSON 返回可打开的 PDF，内容含注入字段
-- 非法 JSON 返回 400 JSON 错误体
-- Gotenberg 未就绪时 health / pdf 有明确失败表现
+- 合法 JSON object 返回可打开的 PDF，内容含注入字段
+- 非法 JSON 或非 object 根值返回 400 JSON 错误体
+- Gotenberg 未就绪时：`GET /health` 返回 503；`POST /api/pdf` 返回 502
 
 ## 风险与缓解
 
@@ -135,5 +139,5 @@ curl -X POST http://localhost:8080/api/pdf \
 |---|---|
 | 镜像体积大（含 Chromium） | 接受；以官方 Gotenberg 镜像为 runtime 基底 |
 | JS 未执行完就截 PDF | 使用 waitDelay / waitForExpression |
-| JSON 注入破坏 HTML/JS | 使用 `json.Marshal` 结果直接替换对象字面量，不做字符串拼接字段 |
-| 双进程启动竞态 | entrypoint 等待 Gotenberg `/health` 后再起 Go，或 Go 侧重试 |
+| JSON 注入破坏 HTML/JS | 用 `json.Marshal` 结果只替换赋值右侧 `{...}`，保留 `window.__REPORT_DATA__ =` |
+| 双进程启动竞态 | entrypoint 等待 Gotenberg health 就绪后再起 Go；`/health` 与 PDF 路径对不可达返回明确错误 |
