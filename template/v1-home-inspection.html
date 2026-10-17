@@ -506,6 +506,102 @@
       padding: 24px 0;
       font-size: 13px;
     }
+    .section-standard {
+      margin: 14px 14mm 0;
+    }
+    .section-standard .card + .card { margin-top: 12px; }
+    .section-standard .card-title { text-align: center; }
+    .std-block { margin-top: 16px; }
+    .std-block:first-of-type { margin-top: 14px; }
+    .std-head {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 10px;
+      padding-left: 8px;
+      border-left: 3px solid var(--blue);
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .std-head-title { font-size: 15px; font-weight: 600; }
+    .std-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .std-item {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .std-item:last-child { border-bottom: none; }
+    .std-item-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .std-item-body {
+      color: #242a33;
+      line-height: 1.7;
+    }
+    .std-item-body p { margin: 0 0 4px; }
+    .std-item-body p:last-child { margin-bottom: 0; }
+    .std-item-body ol {
+      margin: 4px 0 0;
+      padding-left: 1.4em;
+    }
+    .std-item-body li { margin: 2px 0; }
+    .std-ref {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .std-prose {
+      font-size: 13px;
+      color: #242a33;
+      line-height: 1.75;
+    }
+    .std-prose p { margin: 0 0 10px; }
+    .std-prose p:last-child { margin-bottom: 0; }
+    .std-prose ol,
+    .std-prose ul {
+      margin: 6px 0 10px;
+      padding-left: 1.4em;
+    }
+    .std-prose li { margin: 3px 0; }
+    .std-prose .std-subhead {
+      font-weight: 600;
+      margin: 12px 0 6px;
+      color: var(--text);
+    }
+    .std-norm-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+      columns: 1;
+    }
+    .std-norm-list li {
+      position: relative;
+      padding: 6px 8px 6px 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      border-bottom: 1px solid var(--border);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .std-norm-list li:last-child { border-bottom: none; }
+    .std-norm-list li::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 13px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
     @media screen {
       .page {
         background: transparent;
@@ -581,6 +677,270 @@
         <div class="card-sub">按功能间列出全部问题项</div>
         <div id="detailMount"></div>
         <div class="empty" id="detailEmpty" style="display:none">暂无问题记录</div>
+      </div>
+    </div>
+
+    <div class="section section-standard">
+      <div class="card">
+        <div class="card-title">整改共性建议</div>
+        <div class="card-sub">精装房 / 毛坯房常见问题整改参考</div>
+
+        <div class="std-block">
+          <div class="std-head">
+            <div class="std-head-title">【精装房整改共性建议】</div>
+          </div>
+          <ul class="std-list">
+            <li class="std-item">
+              <div class="std-item-title">一、五金件</div>
+              <div class="std-item-body"><p>松动、故障：调试、更换。</p></div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">二、石材</div>
+              <div class="std-item-body"><p>破损可通过相近颜色云石胶修补，破损严重需更换。</p></div>
+              <div class="std-ref">参考规范：《建筑地面工程施工质量验收规范》GB50209-2010</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">三、木地板</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>软塌：地坪重新找平。</li>
+                  <li>起灰：清理地板余灰。</li>
+                </ol>
+              </div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">四、瓷砖</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>空鼓：墙砖空鼓需重新铺贴。地砖边角空鼓可灌浆处理，面积较大、中空需重新铺贴。</li>
+                  <li>高低差：地砖高低差超 0.5mm 需重新铺贴，墙砖高低差超 1mm 需重新铺贴。</li>
+                  <li>平整度：瓷砖超过 2mm 需重新铺贴。</li>
+                </ol>
+              </div>
+              <div class="std-ref">参考规范：《建筑地面工程施工质量验收规范》GB50209-2010；《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">五、地漏</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>错位：弯头连接或重新铺装。</li>
+                  <li>下水管短缺：短管连接，防水砂浆抹边。</li>
+                </ol>
+              </div>
+              <div class="std-ref">参考规范：《建筑地面工程施工质量验收规范》GB50209-2010</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">六、涂料</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>粗糙、色差、污染、磕碰：重新修补、打磨、上漆处理。</li>
+                  <li>裂纹：需重新挂网做抗裂处理。</li>
+                  <li>不平：重新找平。</li>
+                </ol>
+              </div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">七、阴阳角不顺直</div>
+              <div class="std-item-body"><p>重新找补拉顺处理。</p></div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">八、门窗</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>磕碰、掉漆、划痕、破损：需修补、上漆，严重需更换。</li>
+                  <li>异响、闭合不严、碰撞：调试合页处理。</li>
+                </ol>
+              </div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">九、柜门</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>磕碰、掉漆、划痕、破损：需修补、上漆，严重需更换。</li>
+                  <li>异响、闭合不严、碰撞：调试合页处理。</li>
+                </ol>
+              </div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十、石膏吊顶</div>
+              <div class="std-item-body"><p>缺口、不顺直、粗糙、流坠：重新修补、打磨、上漆处理。</p></div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十一、墙纸墙布</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>拼接明显：需整块重新铺贴。</li>
+                  <li>脱胶翘边：需重新上胶铺贴。</li>
+                  <li>破损：需重新更换。</li>
+                </ol>
+              </div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018；《建筑工程施工质量验收统一标准》GB50300-2013</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十二、木饰面</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>钉眼、破损、划痕：需修补、上漆，严重需更换。</li>
+                  <li>大小缝：重新安装。</li>
+                </ol>
+              </div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十三、软包硬包</div>
+              <div class="std-item-body"><p>破损严重需更换。</p></div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十四、插座相序错误</div>
+              <div class="std-item-body"><p>重新接线。</p></div>
+              <div class="std-ref">参考规范：《建筑电气工程施工质量验收规范》GB50303-2015</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十五、等电位未联结五金件</div>
+              <div class="std-item-body"><p>重新做联结。</p></div>
+              <div class="std-ref">参考规范：《建筑电气工程施工质量验收规范》GB50303-2015</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十六、台盆下水管</div>
+              <div class="std-item-body"><p>接头漏水需重新严密连接。</p></div>
+              <div class="std-ref">参考规范：《建筑给水排水及采暖工程施工质量验收规范》GB50242-2002</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十七、淋浴屏渗水</div>
+              <div class="std-item-body"><p>重新打胶收缝处理。</p></div>
+              <div class="std-ref">参考规范：《建筑给水排水及采暖工程施工质量验收规范》GB50242-2002</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十八、电器</div>
+              <div class="std-item-body"><p>调试、更换。</p></div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">十九、墙面泛碱返潮</div>
+              <div class="std-item-body"><p>剔除泛碱返潮部位，待基层干燥后重新上腻子再上漆。</p></div>
+              <div class="std-ref">参考规范：《建筑装饰装修工程质量验收标准》GB50210-2018</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">二十、吊顶隐蔽管道</div>
+              <div class="std-item-body"><p>管道连接需严密规范。</p></div>
+              <div class="std-ref">参考规范：《通风与空调工程施工质量验收规范》GB50243-2016</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">二十一、地面坡度</div>
+              <div class="std-item-body"><p>地面积水需重新找坡。</p></div>
+              <div class="std-ref">参考规范：《建筑地面工程施工质量验收规范》GB50209-2010</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">二十二、卫生间防水</div>
+              <div class="std-item-body"><p>需查找漏点进行补漏并重新做防水处理。</p></div>
+              <div class="std-ref">参考规范：《建筑地面工程施工质量验收规范》GB50209-2010；《建筑工程施工质量验收统一标准》GB50300-2013</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">二十三、踢脚线</div>
+              <div class="std-item-body">
+                <ol>
+                  <li>露缝：墙面、地面进行重新找平再安装。</li>
+                  <li>破损、掉漆：需补漆或更换。</li>
+                </ol>
+              </div>
+              <div class="std-ref">参考规范：《建筑地面工程施工质量验收规范》GB50209-2010</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">二十四、网线未接至面板水晶头</div>
+              <div class="std-item-body"><p>需进行水晶头连接。</p></div>
+              <div class="std-ref">参考规范：《建筑电气工程施工质量验收规范》GB50303-2015</div>
+            </li>
+            <li class="std-item">
+              <div class="std-item-title">二十五、设计类</div>
+              <div class="std-item-body"><p>设计应符合国家规范。</p></div>
+              <div class="std-ref">参考规范：《住宅设计规范》GB50096-2011</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="std-block">
+          <div class="std-head">
+            <div class="std-head-title">【毛坯房整改共性建议】</div>
+          </div>
+          <div class="std-prose">
+            <p class="std-subhead">空鼓</p>
+            <p>使用切割机切割抹灰层空鼓处，再用凿子凿干净基层并且清理干净基层，然后用水养护好，再重新抹灰找平。</p>
+
+            <p class="std-subhead">墙面开裂</p>
+            <p>需挂网处理。</p>
+
+            <p class="std-subhead">地面开裂</p>
+            <p>表面涂抹环氧胶泥：涂抹环氧胶泥前，先将裂缝附近 80～100mm 宽度范围内的灰尘、浮渣用压缩空气吹净，或用钢丝刷、砂纸、毛刷清除干净并洗净，油污可用二甲苯或丙酮擦洗一遍，如表面潮湿，应用喷灯烘烤干燥、预热，以保证环氧胶泥与混凝土粘结良好。若基层难以干燥，则用环氧煤焦油胶泥涂抹。涂抹时，用毛刷或刮板均匀蘸取胶泥，并涂刮在裂缝表面。</p>
+
+            <p class="std-subhead">墙面泛碱</p>
+            <p>一、最好是卫生间砖拆除检查是否都做好防水，如防水没做好需要重新做防水；同时检查是否有水管破，如果水管破就更换水管。</p>
+            <p>二、目前卫生间积水情况也比较严重，倒坡，通过以下步骤来解决：</p>
+            <ol>
+              <li>把砖翘起来重新找好坡度，不然后期排水不畅，还是会积水渗水。</li>
+              <li>采用结晶型渗透防水材质，从瓷砖缝隙灌入，填补水泥垫层缝隙，达到防水渗出的目的。</li>
+              <li>完成后再将表面多余防水剂清除并重新填缝处理。</li>
+              <li>本次使用防水剂，凝结时间为 3 小时以上即可用水。</li>
+            </ol>
+            <p>此流程是从根本上解决其防水问题，避免后期再出现类似情况。其次：</p>
+            <ol>
+              <li>用铲刀将起皮、起鼓的地方铲掉，铲到底层（水泥墙或者砖墙），一直铲到铲不动为止。</li>
+              <li>用钢丝刷将白白的碱垢全部刷掉，一直刷到不掉粉为止。</li>
+              <li>将消碱一号 AB 组掺在一起，具体是将 A 组倒入 B 组。</li>
+              <li>充分搅拌，用油漆刷刷到清理过的地方。</li>
+              <li>来回刷试，确保不要留有孔隙。</li>
+              <li>24–48 小时反应固化后，刮腻子层或者其他装潢步骤。</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">参考标准规范</div>
+        <div class="card-sub">本报告查验依据的相关法律法规与技术标准</div>
+        <ul class="std-norm-list">
+          <li>《建筑法》</li>
+          <li>《商品房买卖合同》</li>
+          <li>《城市房地产开发经营管理条例》</li>
+          <li>《验房师作业标准暨道德规范》房验标[2008]001号</li>
+          <li>《建筑装饰装修工程质量验收标准》GB50210-2018</li>
+          <li>《住宅设计规范》GB50096-2011</li>
+          <li>《住宅项目规范》GB55038-2025</li>
+          <li>《住宅装饰装修工程施工规范》GB50327-2001</li>
+          <li>《住宅室内装饰装修工程质量验收规范》JGJ/T304-2013</li>
+          <li>《建筑工程施工质量验收统一标准》GB50300-2013</li>
+          <li>《建筑地面工程施工质量验收规范》GB50209-2010</li>
+          <li>《建筑给水排水及采暖工程施工质量验收规范》GB50242-2002</li>
+          <li>《给水排水管道工程施工及验收规范》GB50268-2008</li>
+          <li>《建筑电气工程施工质量验收规范》GB50303-2015</li>
+          <li>《屋面工程质量验收规范》GB50207-2012</li>
+          <li>《民用建筑设计统一标准》GB50352-2019</li>
+          <li>《建筑外墙防水工程技术规程》JGJ/T235-2011</li>
+          <li>《建筑用安全玻璃第2部分:钢化玻璃》GB15763.2-2005</li>
+          <li>《建筑玻璃应用技术规程》JGJ113-2015</li>
+          <li>《建筑设计防火规范》GB50016-2014（2018年修订版）</li>
+          <li>《砌体结构工程施工质量验收规范》GB50203-2011</li>
+          <li>《混凝土结构工程施工质量验收规范》GB50204-2015</li>
+          <li>《钢结构工程施工质量验收标准》GB50205-2020</li>
+          <li>《住宅室内防水工程技术规范》JGJ298-2013</li>
+          <li>《地下防水工程质量验收规范》GB50208-2011</li>
+          <li>《通风与空调工程施工质量验收规范》GB50243-2016</li>
+          <li>《防盗安全门通用技术条件》GB17565-2022</li>
+          <li>《防火门》GB12955-2008</li>
+          <li>《家用厨房设备第2部分：通用技术要求》GB/T18884.2-2015</li>
+          <li>《家用厨房设备第4部分：设计与安装》GB/T18884.4-2015</li>
+          <li>《生活饮用水卫生标准》GB5749-2022</li>
+          <li>《吸油烟机及其他烹饪烟气吸排装置》GB/T17713-2022</li>
+          <li>《中小套型住宅厨房和卫生间工程技术规程》CECS284:2010</li>
+          <li>《民用建筑隔声设计规范》GB50118-2010</li>
+          <li>《中华人民共和国环境噪声污染防治法》</li>
+          <li>《室内空气质量标准》GB/T18883-2022 等</li>
+        </ul>
       </div>
     </div>
   </div>
